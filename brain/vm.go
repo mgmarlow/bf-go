@@ -24,10 +24,26 @@ func (m *BrainVM) Interpret(instructions []byte) {
 			m.DP--
 
 		case '[':
+			if m.Memory[m.DP] == 0 {
+				for i := m.IP; i < len(instructions); i++ {
+					if instructions[i] == ']' {
+						m.IP = i + 1
+						break
+					}
+				}
+			}
 		case ']':
+			if m.Memory[m.DP] != 0 {
+				for i := m.IP; i > 0; i-- {
+					if instructions[i] == '[' {
+						m.IP = i + 1
+						break
+					}
+				}
+			}
 
 		case '.':
-			fmt.Println(m.Memory[m.DP])
+			fmt.Printf("%c", m.Memory[m.DP])
 		case ',':
 			// TODO
 
