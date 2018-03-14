@@ -2,12 +2,14 @@ package brain
 
 import (
 	"fmt"
+	"os"
 )
 
 type BrainVM struct {
 	Memory [30000]uint8
 	DP     int
 	IP     int
+	buf    []byte
 }
 
 func (m *BrainVM) Interpret(instructions []byte) {
@@ -25,19 +27,25 @@ func (m *BrainVM) Interpret(instructions []byte) {
 
 		case '[':
 			if m.Memory[m.DP] == 0 {
-				for i := m.IP; i < len(instructions); i++ {
-					if instructions[i] == ']' {
-						m.IP = i + 1
-						break
+				depth := 1
+				for depth != 0 {
+					m.IP++
+					if instructions[m.IP] == '[' {
+						depth++
+					} else if instructions[m.IP] == ']' {
+						depth--
 					}
 				}
 			}
 		case ']':
 			if m.Memory[m.DP] != 0 {
-				for i := m.IP; i > 0; i-- {
-					if instructions[i] == '[' {
-						m.IP = i + 1
-						break
+				depth := 1
+				for depth != 0 {
+					m.IP--
+					if instructions[m.IP] == ']' {
+						depth++
+					} else if instructions[m.IP] == '[' {
+						depth--
 					}
 				}
 			}
@@ -45,11 +53,27 @@ func (m *BrainVM) Interpret(instructions []byte) {
 		case '.':
 			fmt.Printf("%c", m.Memory[m.DP])
 		case ',':
-			// TODO
+			m.readChar()
 
 		default:
 		}
 
 		m.IP++
 	}
+}
+
+// TODO: input from file?
+func (m *BrainVM) readChar() {
+	m.buf = make([]byte, 1)
+	n, err := os.Stdin.Read(m.buf)
+	if err != nil {
+		panic(err)
+	}
+
+	if n != 1 {
+		// TODO: better error handling
+		panic("Please only enter one character")
+	}
+
+	m.Memory[m.DP] = uint8(m.buf[0])
 }
