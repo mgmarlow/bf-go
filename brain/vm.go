@@ -13,6 +13,8 @@ type BrainVM struct {
 }
 
 func (m *BrainVM) Interpret(instructions []byte) {
+	m.clear()
+
 	for m.IP < len(instructions) {
 		switch instructions[m.IP] {
 		case '+':
@@ -62,9 +64,15 @@ func (m *BrainVM) Interpret(instructions []byte) {
 	}
 }
 
+func (m *BrainVM) clear() {
+	m.Memory = [30000]uint8{}
+	m.DP = 0
+	m.IP = 0
+	m.buf = make([]byte, 1)
+}
+
 // TODO: input from file?
 func (m *BrainVM) readChar() {
-	m.buf = make([]byte, 1)
 	n, err := os.Stdin.Read(m.buf)
 	if err != nil {
 		panic(err)
