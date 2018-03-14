@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	bfFile, err := ioutil.ReadFile("./hello.bf")
+	bfFile, err := ioutil.ReadFile("./mandelbrot.bf")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "reading input file: %v", err)
 	}
