@@ -4,6 +4,13 @@
 language represented by an array with 30,000 cells initialized to zero, and a
 data pointer pointing at the current cell.
 
+## Install
+
+```
+go get github.com/mgmarlow/bf-go
+go run main.go
+```
+
 ## Commands
 
 ```bf
