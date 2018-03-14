@@ -6,7 +6,7 @@ data pointer pointing at the current cell.
 
 ## Commands
 
-```
+```bf
 + : Increments the value at the current cell by one.
 - : Decrements the value at the current cell by one.
 > : Moves the data pointer to the next cell (cell on the right).
@@ -20,7 +20,7 @@ data pointer pointing at the current cell.
 ```
 
 ## Hello World
-```
+```bf
 +++++ +++++             initialize counter (cell #0) to 10
 [                       use loop to set 70/100/30/10
     > +++++ ++              add  7 to cell #1
